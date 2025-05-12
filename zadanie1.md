@@ -1,5 +1,5 @@
 ## 1.1. KOD ŹRÓDŁOWY APLIKACJI SERWERA ('SERVER.JS')
-
+```
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
@@ -42,11 +42,11 @@ app.post('/weather', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Serwer działa.`);
 });
-
+```
 
 
 ## 1.2. KOD ŹRÓDŁOWY STRONY HTML ('INDEX.HTML')
-
+```
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -157,11 +157,11 @@ app.listen(PORT, () => {
     </script>
 </body>
 </html>
-
+```
 
 
 ## 2. KOD PLIKU DOCKERFILE
-
+```
 # Etap 1: Budowanie aplikacji
 FROM node:18-alpine AS build
 # Autor aplikacji
@@ -191,33 +191,33 @@ CMD echo "Aplikacja uruchomiona przez: Kacper Klusek" && \
 # Healthcheck
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
     CMD curl --silent --fail http://localhost:3000 || exit 1
-
+```
 
 
 ## 3.1. POLECENIE BUDOWY OBRAZU
-
+```
 docker build -f Dockerfile -t 99578/weather_app:v3 .
-
+```
 
 
 ## 3.2. POLECENIE URUCHOMIENIA OBRAZU
-
+```
 docker run --env-file .env -p 3000:3000 --name weather_app docker.io/99578/weather_app:v3
-
+```
 
 
 
 ## 3.3. POLECENIE POZYSKANIA LOGÓW
-
+```
 docker logs weather_app
-
+```
 
 
 ## 3.4. POLECENIA O ILOŚCI WARSTW I ROZMIARZE OBRAZU
-
+```
 docker image history docker.io/99578/weather_app:v3
 docker image inspect docker.io/99578/weather_app:v3 --format='{{.Size}}'
-
+```
 
 
 ## 4. SCREENY Z DZIAŁANIA APLIKACJI
@@ -227,4 +227,3 @@ docker image inspect docker.io/99578/weather_app:v3 --format='{{.Size}}'
 ![Zrzut z formularza](screen2.png)
 
 ![Zrzut z pobranej pogody](screen3.png)
-
