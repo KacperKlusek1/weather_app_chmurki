@@ -1,11 +1,11 @@
 ## 1. UTWORZENIE BUILDERA 
-
+```
 docker buildx create --name docker-container --driver docker-container --use
-
+```
 
 
 ## 2. KOD DOCKERFILE_DOD
-
+```
 # syntax=docker/dockerfile:1.4
 # Etap 1: Budowanie aplikacji
 FROM node:18-alpine AS build
@@ -38,13 +38,13 @@ CMD echo "Aplikacja uruchomiona przez: Kacper Klusek" && \
 # Healthcheck
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
     CMD curl --silent --fail http://localhost:3000 || exit 1
-
+```
 
 
 ## 3. ZBUDOWANIE OBRAZÓW
-
+```
 docker buildx build -f Dockerfile_dod --platform linux/amd64,linux/arm64 -t docker.io/99578/weather_app:multiarch --push --cache-to type=inline --cache-from type=registry,ref=docker.io/99578/weather_app:multiarch .
-
+```
 
 
 ## 4. POTWIERDZENIE DEKLARACJI DWÓCH ARCHITEKTUR SPRZĘTOWYCH
@@ -58,4 +58,3 @@ docker buildx build -f Dockerfile_dod --platform linux/amd64,linux/arm64 -t dock
 ## 5. POTWIERDZENIE DZIAŁAJĄCEGO CACHE
 
 ![screen z cache](screen3_dod.png)
-
