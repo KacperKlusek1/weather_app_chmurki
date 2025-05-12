@@ -1,23 +1,24 @@
+# syntax=docker/dockerfile:1.4
 # Etap 1: Budowanie aplikacji
 FROM node:24-alpine AS build
 # Autor aplikacji
 LABEL author="Kacper Klusek"
+# Instalacja git
+RUN apk add --no-cache git
 # Ustawienie katalogu roboczego
 WORKDIR /app
-# Skopiowanie plików package.json i package-lock.json
-COPY package*.json ./
+# Pobranie repozytorium
+RUN git clone https://github.com/KacperKlusek1/weather_app_chmurki.git .
 # Instalacja zależności
 RUN npm install
-# Skopiowanie reszty aplikacji
-COPY . .
 
 # Etap 2: Uruchomienie aplikacji
 FROM node:24-alpine
-# Dodanie curl aby healthcheck dzialal
+# Instalacja curl
 RUN apk add --no-cache curl
 # Ustawienie katalogu roboczego
 WORKDIR /app
-# Skopiowanie tylko wymaganych plików z etapu budowania
+# Kopiowanie plików z etapu build
 COPY --from=build /app /app
 # Eksponowanie portu na którym nasłuchuje aplikacja
 EXPOSE 3000
@@ -29,4 +30,3 @@ CMD echo "Aplikacja uruchomiona przez: Kacper Klusek" && \
 # Healthcheck
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
     CMD curl --silent --fail http://localhost:3000 || exit 1
-
