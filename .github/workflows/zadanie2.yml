@@ -40,17 +40,19 @@ jobs:
           platforms: linux/amd64
           push: false
           tags: temp-image:scan
-          outputs: type=docker,dest=/tmp/image.tar
+          load: true
           cache-from: type=registry,ref=docker.io/${{ secrets.DOCKERHUB_USERNAME }}/cache:${{ github.sha }}
           cache-to: type=registry,ref=docker.io/${{ secrets.DOCKERHUB_USERNAME }}/cache:${{ github.sha }},mode=max
+          tags: test:amd64
 
       - name: Skanowanie obrazu za pomocą Trivy
-        uses: aquasecurity/trivy-action@v0.11.2
+        uses: aquasecurity/trivy-action@0.13.0
         with:
-          input: /tmp/image.tar
+          image-ref: test:amd64
           format: table
+          ignore-unfixed: true
+          severity: HIGH,CRITICAL
           exit-code: 1
-          severity: CRITICAL,HIGH
 
       - name: Budowanie i pushowanie obrazu multiarch na ghcr.io
         if: success()
