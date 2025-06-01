@@ -61,8 +61,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ format('ghcr.io/{0}:latest', github.repository) | lower }}
-            ${{ format('ghcr.io/{0}:{1}', github.repository, github.sha) | lower }}
+            ${{ format('ghcr.io/{0}:latest', toLower(github.repository)) }}
+            ${{ format('ghcr.io/{0}:{1}', toLower(github.repository), github.sha) }}
           cache-from: type=registry,ref=docker.io/${{ secrets.DOCKERHUB_USERNAME }}/cache:${{ github.sha }}
           cache-to: type=registry,ref=docker.io/${{ secrets.DOCKERHUB_USERNAME }}/cache:${{ github.sha }},mode=max
 
