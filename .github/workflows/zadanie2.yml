@@ -43,12 +43,11 @@ jobs:
           load: true
           cache-from: type=registry,ref=docker.io/${{ secrets.DOCKERHUB_USERNAME }}/cache:${{ github.sha }}
           cache-to: type=registry,ref=docker.io/${{ secrets.DOCKERHUB_USERNAME }}/cache:${{ github.sha }},mode=max
-          tags: test:amd64
 
       - name: Skanowanie obrazu za pomocą Trivy
         uses: aquasecurity/trivy-action@0.13.0
         with:
-          image-ref: test:amd64
+          image-ref: temp-image:scan
           format: table
           ignore-unfixed: true
           severity: HIGH,CRITICAL
